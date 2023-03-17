@@ -3,13 +3,15 @@ import Icon from '@mui/material/Icon';
 import {Paper, Typography, Box, Divider, Button} from '@mui/material';
 import {useFlags} from 'launchdarkly-react-client-sdk';
 import Carousel from 'react-material-ui-carousel';
+import {useAppStore} from '../store/app';
 
 function LinkCarousel() {
 	const {carouselItems} = useFlags();
+	const theme = useAppStore(state => state.themeName);
 
 	if (carouselItems) {
 		return (
-			<Box sx={{minHeight: 325, maxHeight: 300, maxWidth: 600, width: '100%', mx: 'auto'}}>
+			<Paper elevation={theme === 'dark' ? 1 : 12} sx={{minHeight: 325, maxHeight: 300, maxWidth: 600, width: '100%', mx: 'auto'}}>
 				<Carousel
 					dots
 					infinite
@@ -22,8 +24,7 @@ function LinkCarousel() {
 				>
 					{carouselItems.map(item => (
 
-						<Paper key={item.title} sx={{textAlign: 'center'}}>
-
+						<Box key={item.title} sx={{textAlign: 'center'}}>
 							<Box sx={{height: 112}}>
 								<Icon color='primary' sx={{fontSize: 112, mb: 3}}>{item.icon.slice(4)}</Icon>
 							</Box>
@@ -37,13 +38,13 @@ function LinkCarousel() {
 							</Box>
 
 							<Divider sx={{mb: 2}}/>
-							<Box elevation={24} sx={{textAlign: 'right'}}>
-								<Button color='neutral' sx={{minWidth: 164, border: 0.25, color: '#e6e6e6', mr: 2, mb: 2}} href={item.link} target='_blank' rel='noopener noreferrer'>{item.label}</Button>
+							<Box sx={{textAlign: 'right'}}>
+								<Button disableElevation color='neutral' sx={{minWidth: 164, border: 0.25, color: theme === 'dark' ? '#e6e6e6' : 'primary', mr: 2, mb: 2}} href={item.link} target='_blank' rel='noopener noreferrer'>{item.label}</Button>
 							</Box>
-						</Paper>
+						</Box>
 					))}
 				</Carousel>
-			</Box>
+			</Paper>
 		);
 	}
 
