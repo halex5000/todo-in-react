@@ -104,7 +104,7 @@ const starterTodos = [
 	{
 		title: 'Capture browser info',
 		description:
-      'To support debugging and advanced targeting, we need to be able to capture browser info',
+			'To support debugging and advanced targeting, we need to be able to capture browser info',
 		isComplete: true,
 		ordinalNumber: 2,
 		id: nanoid(),
@@ -119,7 +119,7 @@ const starterTodos = [
 	{
 		title: 'Provide the ability to Login',
 		description:
-      'To support delivering features to specific users, we need them to be able to login',
+			'To support delivering features to specific users, we need them to be able to login',
 		isComplete: true,
 		ordinalNumber: 3,
 		id: nanoid(),
@@ -141,7 +141,7 @@ const starterTodos = [
 	{
 		title: 'Validate input when creating a ToDo item',
 		description:
-      'To get meaningful data, we\'ll need some validation on user input',
+			"To get meaningful data, we'll need some validation on user input",
 		isComplete: false,
 		ordinalNumber: 7,
 		id: nanoid(),
@@ -149,7 +149,7 @@ const starterTodos = [
 	{
 		title: 'Support local storage of ToDo list',
 		description:
-      'Users want persistent ToDo lists and local storage could help support this',
+			'Users want persistent ToDo lists and local storage could help support this',
 		isComplete: false,
 		ordinalNumber: 6,
 		id: nanoid(),
@@ -164,9 +164,96 @@ export const useAppStore = create((set, get) => ({
 	logout() {
 		set({user: null});
 	},
-	todos: [starterTodos],
+	todos: [...starterTodos],
+	addToDo(todo) {
+		let index = 0;
+		const todos = get().todos;
+		if (todos && todos.length > 0) {
+			const sortedToDos = todos.sort((todoA, todoB) => {
+				if (todoA.ordinalNumber > todoB.ordinalNumber) {
+					return 1;
+				}
+
+				if (todoA.ordinalNumber < todoB.ordinalNumber) {
+					return -1;
+				}
+
+				return 0;
+			});
+			index = sortedToDos[sortedToDos.length - 1].ordinalNumber + 1;
+			set({
+				todos: [
+					...sortedToDos,
+					{
+						...todo,
+						id: nanoid(),
+						isComplete: false,
+						ordinalNumber: index,
+					},
+				],
+			});
+		} else {
+			set({
+				todos: [
+					{
+						...todo,
+						id: nanoid(),
+						isComplete: false,
+						ordinalNumber: index,
+					},
+				],
+			});
+		}
+	},
+	removeToDo(id) {
+		const updatedToDos = get().todos.filter((todo) => todo.id !== id);
+		set({todos: [...updatedToDos]});
+	},
+	addBrowserInfo(browserInfo) {
+		const {browser, engine, ua, os, device, cpu} = browserInfo;
+		set({
+			browser,
+			engine,
+			userAgent: ua,
+			operatingSystem: os,
+			device,
+			cpu,
+		});
+	},
+	browser: null,
+	engine: null,
+	operatingSystem: null,
+	device: null,
+	cpu: null,
+	userAgent: null,
+	debugAllowList: [],
+	updateAllowList(_allowList) {
+		set({allowList: _allowList});
+	},
 	theme: darkTheme,
 	themeName: 'dark',
+	allState() {
+		const state = get();
+		const stateEntries = Object.entries(state);
+		const entries = stateEntries
+			.filter((entry) => {
+				const [key, value] = entry;
+				return (
+					state.debugAllowList.includes(key) &&
+					typeof value !== 'function' &&
+					key.match(/^[a-z\d]/i) &&
+					!key.startsWith('allState')
+				);
+			})
+			.map((entry) => {
+				const [key, value] = entry;
+				return {
+					key,
+					value,
+				};
+			});
+		return entries;
+	},
 	toggleTheme() {
 		set(() => {
 			const currentTheme = get().themeName;
@@ -183,5 +270,18 @@ export const useAppStore = create((set, get) => ({
 				themeName: 'dark',
 			};
 		});
+	},
+	toggleToDoComplete(id) {
+		const todos = get().todos.map((todo) => {
+			if (todo.id === id) {
+				return {
+					...todo,
+					isComplete: !todo.isComplete,
+				};
+			}
+
+			return todo;
+		});
+		set({todos});
 	},
 }));

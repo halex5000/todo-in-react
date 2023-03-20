@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {withLDProvider} from 'launchdarkly-react-client-sdk';
+import {BrowserRouter} from 'react-router-dom';
 import App from './App';
 import './index.css';
 
@@ -14,6 +15,8 @@ const LaunchDarklyPoweredApp = withLDProvider({
 
 ReactDOM.createRoot(document.querySelector('#root')).render(
 	<React.StrictMode>
-		<LaunchDarklyPoweredApp/>
+		<BrowserRouter>
+			<LaunchDarklyPoweredApp />
+		</BrowserRouter>
 	</React.StrictMode>,
 );
