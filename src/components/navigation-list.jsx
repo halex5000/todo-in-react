@@ -62,7 +62,7 @@ function NavigationList({isOpen, onClickAway}) {
 					<AccountIcon user={user} />
 					<Divider />
 					<ListItem>
-						<ListItemButton component={Link} href="/">
+						<ListItemButton component={Link} to="/">
 							<ListItemIcon>
 								<HomeIcon />
 							</ListItemIcon>
@@ -70,7 +70,7 @@ function NavigationList({isOpen, onClickAway}) {
 						</ListItemButton>
 					</ListItem>
 					<ListItem>
-						<ListItemButton component={Link} href="/todo-list">
+						<ListItemButton component={Link} to="/todo-list">
 							<ListItemIcon>
 								<ClipboardList />
 							</ListItemIcon>
