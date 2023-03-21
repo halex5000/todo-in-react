@@ -27,7 +27,7 @@ export default function ToDoListView() {
 	const [title, setTitle] = useState();
 	const [description, setDescription] = useState();
 	const todos = useAppStore((state) => state.todos);
-	const addTodo = useAppStore((state) => state.addTodo);
+	const addToDo = useAppStore((state) => state.addToDo);
 	const removeToDo = useAppStore((state) => state.removeToDo);
 	const toggleToDoComplete = useAppStore((state) => state.toggleToDoComplete);
 	const {createToDoItem, deleteToDoItem} = useFlags();
@@ -41,7 +41,7 @@ export default function ToDoListView() {
 	};
 
 	const save = () => {
-		addTodo({
+		addToDo({
 			title,
 			description,
 		});
