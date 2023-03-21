@@ -59,5 +59,4 @@ export default function LoginDialog({isOpen, handleClose}) {
 LoginDialog.propTypes = {
 	isOpen: PropTypes.bool,
 	handleClose: PropTypes.func,
-	login: PropTypes.func,
 };

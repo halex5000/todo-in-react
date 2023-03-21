@@ -14,7 +14,6 @@ import {
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	Tooltip,
 } from '@mui/material';
 import {Link} from 'react-router-dom';
 import {useAppStore} from '../store/app';
