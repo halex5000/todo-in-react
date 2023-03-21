@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountBox from '@mui/icons-material/AccountBox';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ClipboardList from '@mui/icons-material/List';
+import {useFlags} from 'launchdarkly-react-client-sdk';
 import Bug from '@mui/icons-material/BugReport';
 import {
 	Divider,
@@ -68,6 +69,7 @@ function NavigationList({
 	toggleNavigationDrawer,
 }) {
 	const user = useAppStore((state) => state.user);
+	const {login, toDoList, debugPanel} = useFlags();
 	return (
 		<Drawer open={isOpen} variant="temporary" sx={{flexShrink: 0}}>
 			<ClickAwayListener
@@ -76,11 +78,13 @@ function NavigationList({
 				}}
 			>
 				<List>
-					<AccountIcon
-						toggleNavigationDrawer={toggleNavigationDrawer}
-						toggleLogin={toggleLogin}
-						user={user}
-					/>
+					{login && (
+						<AccountIcon
+							toggleNavigationDrawer={toggleNavigationDrawer}
+							toggleLogin={toggleLogin}
+							user={user}
+						/>
+					)}
 					<Divider />
 					<ListItem>
 						<ListItemButton component={Link} to="/">
@@ -90,27 +94,31 @@ function NavigationList({
 							<ListItemText primary="Home" />
 						</ListItemButton>
 					</ListItem>
-					<ListItem>
-						<ListItemButton component={Link} to="/todo-list">
-							<ListItemIcon>
-								<ClipboardList />
-							</ListItemIcon>
-							<ListItemText primary="ToDo List" />
-						</ListItemButton>
-					</ListItem>
-					<ListItem>
-						<ListItemButton
-							onClick={() => {
-								toggleNavigationDrawer();
-								toggleDebugDrawer();
-							}}
-						>
-							<ListItemIcon>
-								<Bug />
-							</ListItemIcon>
-							<ListItemText primary="Dev Tools" />
-						</ListItemButton>
-					</ListItem>
+					{toDoList && (
+						<ListItem>
+							<ListItemButton component={Link} to="/todo-list">
+								<ListItemIcon>
+									<ClipboardList />
+								</ListItemIcon>
+								<ListItemText primary="ToDo List" />
+							</ListItemButton>
+						</ListItem>
+					)}
+					{debugPanel && (
+						<ListItem>
+							<ListItemButton
+								onClick={() => {
+									toggleNavigationDrawer();
+									toggleDebugDrawer();
+								}}
+							>
+								<ListItemIcon>
+									<Bug />
+								</ListItemIcon>
+								<ListItemText primary="Dev Tools" />
+							</ListItemButton>
+						</ListItem>
+					)}
 				</List>
 			</ClickAwayListener>
 		</Drawer>

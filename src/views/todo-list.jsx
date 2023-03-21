@@ -19,6 +19,7 @@ import {
 	ListItemText,
 } from '@mui/material';
 import React, {useState} from 'react';
+import {useFlags} from 'launchdarkly-react-client-sdk';
 import {useAppStore} from '../store/app';
 
 export default function ToDoListView() {
@@ -29,6 +30,7 @@ export default function ToDoListView() {
 	const addTodo = useAppStore((state) => state.addTodo);
 	const removeToDo = useAppStore((state) => state.removeToDo);
 	const toggleToDoComplete = useAppStore((state) => state.toggleToDoComplete);
+	const {createToDoItem, deleteToDoItem} = useFlags();
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -106,28 +108,32 @@ export default function ToDoListView() {
 						ToDo List
 					</Typography>
 					<Divider />
-					<IconButton
-						size="large"
-						aria-label="create new todo"
-						onClick={handleClickOpen}
-					>
-						<NoteAddTwoTone fontSize="inherit" />
-					</IconButton>
+					{createToDoItem && (
+						<IconButton
+							size="large"
+							aria-label="create new todo"
+							onClick={handleClickOpen}
+						>
+							<NoteAddTwoTone fontSize="inherit" />
+						</IconButton>
+					)}
 				</Toolbar>
 				<List sx={{width: '100%', maxWidth: 600, bgcolor: 'background.paper'}}>
 					{todos.map((todo) => (
 						<ListItem
 							key={todo.title}
 							secondaryAction={
-								<IconButton
-									edge="end"
-									aria-label="delete todo"
-									onClick={() => {
-										deleteToDo(todo.id);
-									}}
-								>
-									<Delete />
-								</IconButton>
+								deleteToDoItem && (
+									<IconButton
+										edge="end"
+										aria-label="delete todo"
+										onClick={() => {
+											deleteToDo(todo.id);
+										}}
+									>
+										<Delete />
+									</IconButton>
+								)
 							}
 						>
 							<ListItemButton>

@@ -232,18 +232,19 @@ export const useAppStore = create((set, get) => ({
 	userAgent: null,
 	debugAllowList: [],
 	updateAllowList(_allowList) {
-		set({allowList: _allowList});
+		set({debugAllowList: _allowList});
 	},
 	theme: darkTheme,
 	themeName: 'dark',
 	allState() {
 		const state = get();
 		const stateEntries = Object.entries(state);
+		const debugAllowList = get().debugAllowList;
 		const entries = stateEntries
 			.filter((entry) => {
 				const [key, value] = entry;
 				return (
-					state.debugAllowList.includes(key) &&
+					debugAllowList.includes(key) &&
 					typeof value !== 'function' &&
 					key.match(/^[a-z\d]/i) &&
 					!key.startsWith('allState')
