@@ -14,19 +14,25 @@ import {
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
+	Tooltip,
 } from '@mui/material';
 import {Link} from 'react-router-dom';
 import {useAppStore} from '../store/app';
 
 function AccountIcon({user, toggleLogin, toggleNavigationDrawer}) {
+	const logout = useAppStore((state) => state.logout);
 	if (user) {
 		return (
 			<ListItem>
-				<ListItemButton>
+				<ListItemButton
+					onClick={() => {
+						logout();
+					}}
+				>
 					<ListItemIcon>
 						<AccountCircle />
 					</ListItemIcon>
-					<ListItemText>Logged in as {user.username}</ListItemText>
+					<ListItemText>Logout of {user.username}</ListItemText>
 				</ListItemButton>
 			</ListItem>
 		);

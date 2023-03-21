@@ -16,7 +16,7 @@ export default function LoginDialog({isOpen, handleClose}) {
 	const [password, setPassword] = useState();
 	const login = useAppStore((state) => state.login);
 	return (
-		<Dialog fullScreen open={isOpen} onClose={handleClose}>
+		<Dialog open={isOpen} onClose={handleClose}>
 			<DialogTitle variant="h3">Who Goes There?</DialogTitle>
 			<Divider />
 			<DialogContent>
@@ -31,6 +31,7 @@ export default function LoginDialog({isOpen, handleClose}) {
 				<TextField
 					fullWidth
 					label="Password"
+					type="password"
 					onChange={(event) => {
 						setPassword(event.target.value);
 					}}
