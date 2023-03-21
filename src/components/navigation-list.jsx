@@ -18,7 +18,7 @@ import {
 import {Link} from 'react-router-dom';
 import {useAppStore} from '../store/app';
 
-function AccountIcon({user}) {
+function AccountIcon({user, toggleLogin, toggleNavigationDrawer}) {
 	if (user) {
 		return (
 			<ListItem>
@@ -26,7 +26,7 @@ function AccountIcon({user}) {
 					<ListItemIcon>
 						<AccountCircle />
 					</ListItemIcon>
-					<ListItemText>Logged in as username</ListItemText>
+					<ListItemText>Logged in as {user.username}</ListItemText>
 				</ListItemButton>
 			</ListItem>
 		);
@@ -34,7 +34,12 @@ function AccountIcon({user}) {
 
 	return (
 		<ListItem>
-			<ListItemButton>
+			<ListItemButton
+				onClick={() => {
+					toggleNavigationDrawer();
+					toggleLogin();
+				}}
+			>
 				<ListItemIcon>
 					<AccountBox />
 				</ListItemIcon>
@@ -46,20 +51,31 @@ function AccountIcon({user}) {
 
 AccountIcon.propTypes = {
 	user: PropTypes.object,
+	toggleLogin: PropTypes.func,
+	toggleNavigationDrawer: PropTypes.func,
 };
 
-function NavigationList({isOpen, onClickAway}) {
+function NavigationList({
+	isOpen,
+	onClickAway,
+	toggleDebugDrawer,
+	toggleLogin,
+	toggleNavigationDrawer,
+}) {
 	const user = useAppStore((state) => state.user);
 	return (
 		<Drawer open={isOpen} variant="temporary" sx={{flexShrink: 0}}>
 			<ClickAwayListener
 				onClickAway={() => {
-					console.log('something is happening');
 					onClickAway();
 				}}
 			>
 				<List>
-					<AccountIcon user={user} />
+					<AccountIcon
+						toggleNavigationDrawer={toggleNavigationDrawer}
+						toggleLogin={toggleLogin}
+						user={user}
+					/>
 					<Divider />
 					<ListItem>
 						<ListItemButton component={Link} to="/">
@@ -78,7 +94,12 @@ function NavigationList({isOpen, onClickAway}) {
 						</ListItemButton>
 					</ListItem>
 					<ListItem>
-						<ListItemButton>
+						<ListItemButton
+							onClick={() => {
+								toggleNavigationDrawer();
+								toggleDebugDrawer();
+							}}
+						>
 							<ListItemIcon>
 								<Bug />
 							</ListItemIcon>
@@ -94,6 +115,9 @@ function NavigationList({isOpen, onClickAway}) {
 NavigationList.propTypes = {
 	isOpen: PropTypes.bool,
 	onClickAway: PropTypes.func,
+	toggleDebugDrawer: PropTypes.func,
+	toggleLogin: PropTypes.func,
+	toggleNavigationDrawer: PropTypes.func,
 };
 
 export default NavigationList;

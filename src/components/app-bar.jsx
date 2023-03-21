@@ -5,7 +5,7 @@ import {Box, IconButton, Toolbar} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ThemeSwitcher from './theme-switcher';
 
-function AppBar({toggleDebugDrawer, toggleNavigationDrawer}) {
+function AppBar({toggleNavigationDrawer}) {
 	return (
 		<Box sx={{flexGrow: 1}}>
 			<MaterialAppBar position="fixed">
@@ -31,7 +31,6 @@ function AppBar({toggleDebugDrawer, toggleNavigationDrawer}) {
 }
 
 AppBar.propTypes = {
-	toggleDebugDrawer: PropTypes.func,
 	toggleNavigationDrawer: PropTypes.func,
 };
 

@@ -159,7 +159,11 @@ const starterTodos = [
 export const useAppStore = create((set, get) => ({
 	user: null,
 	login({username: _username}) {
-		set(() => ({username: _username}));
+		set({
+			user: {
+				username: _username,
+			},
+		});
 	},
 	logout() {
 		set({user: null});
